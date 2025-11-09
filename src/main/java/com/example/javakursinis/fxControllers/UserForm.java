@@ -1,6 +1,8 @@
 package com.example.javakursinis.fxControllers;
 
+import com.example.javakursinis.hibernateControllers.GenericHibernate;
 import com.example.javakursinis.model.User;
+import jakarta.persistence.EntityManagerFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -27,12 +29,24 @@ public class UserForm {
     public RadioButton driverRadio;
     public TextField addressField;
 
+    private EntityManagerFactory factory;
+    private GenericHibernate genericHibernate;
+
+    public void setData(EntityManagerFactory factory) {
+        this.factory = factory;
+        this.genericHibernate = new GenericHibernate(factory);
+    }
+
     public void createUser(ActionEvent actionEvent) {
+//        User user = new User(usernameField.getText(),
+//        pswField.getText(), nameField.getText(), surnameField.getText(),
+//        phoneNumberField.getText());
+//        System.out.println(user);
+//        userListField.getItems().add(user);
         User user = new User(usernameField.getText(),
         pswField.getText(), nameField.getText(), surnameField.getText(),
         phoneNumberField.getText());
-        System.out.println(user);
-        userListField.getItems().add(user);
+        genericHibernate.create(user);
     }
 
     public void disableFields() {

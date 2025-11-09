@@ -1,14 +1,24 @@
 package com.example.javakursinis.model;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Getter
 @Setter
-public class User {
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+public class User implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
+    @Column(unique = true)
     protected String login;
     protected String password;
     protected String name;
