@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 
 public class UserForm {
@@ -20,6 +21,11 @@ public class UserForm {
     public TextField phoneNumberField;
     @FXML
     public ListView<User> userListField;
+    public RadioButton userRadio;
+    public RadioButton restaurantRadio;
+    public RadioButton clientRadio;
+    public RadioButton driverRadio;
+    public TextField addressField;
 
     public void createUser(ActionEvent actionEvent) {
         User user = new User(usernameField.getText(),
@@ -27,5 +33,17 @@ public class UserForm {
         phoneNumberField.getText());
         System.out.println(user);
         userListField.getItems().add(user);
+    }
+
+    public void disableFields() {
+        if(userRadio.isSelected()) {
+            addressField.setDisable(true);
+        } else if (restaurantRadio.isSelected()) {
+            addressField.setDisable(false);
+        }else if (clientRadio.isSelected()) {
+
+        }else if (driverRadio.isSelected()) {
+
+        }
     }
 }
