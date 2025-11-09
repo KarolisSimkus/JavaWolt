@@ -7,7 +7,8 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Chat {
-    private int id;
-    private List<Review> messages;
+public class Restaurant {
+    protected List<Cuisine> dishes;
+    protected String workHours;
+    protected double rating;
 }

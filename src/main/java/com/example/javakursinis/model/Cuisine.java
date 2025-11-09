@@ -3,13 +3,12 @@ package com.example.javakursinis.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
-public class FoodOrder {
+public class Cuisine {
     private int id;
-    private List<Cuisine> items;
+    private Ingredients ingredients;
+    private Allergens allergens;
+    private PortionSize portionSize;
     private double price;
-    private List<Chat> chat;
 }
