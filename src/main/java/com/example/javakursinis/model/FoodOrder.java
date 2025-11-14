@@ -17,10 +17,17 @@ public class FoodOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @ManyToMany(mappedBy = "orders", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Cuisine> items;
     private double price;
-    private List<Chat> chat;
 
     @ManyToOne
-    private BasicUser basicUser;
+    private BasicUser customer;
+    @ManyToOne
+    private Driver driver;
+    @ManyToOne
+    private Restaurant restaurant;
+    @OneToOne
+    private Chat chat;
+    //private List<OrderItem>
 }

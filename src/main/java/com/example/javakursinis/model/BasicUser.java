@@ -1,8 +1,6 @@
 package com.example.javakursinis.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,12 +17,15 @@ import java.util.List;
 public class BasicUser extends User {
 
     protected String address;
-    @OneToMany()
-    protected List<FoodOrder> myOrders;
-    @OneToMany()
-    protected List<Review> myReviews;
-    @Transient
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    protected List<Chat> chats;
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    protected List<ChatMessage> myReviews;
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     protected List<Review> feedback;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    protected List<FoodOrder> myOrders;
+
 
     public BasicUser(String login, String password, String name, String surname, String phoneNumber, String address) {
         super(login, password, name, surname, phoneNumber);

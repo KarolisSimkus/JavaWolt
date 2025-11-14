@@ -1,6 +1,7 @@
 package com.example.javakursinis.fxControllers;
 
 import com.example.javakursinis.hibernateControllers.GenericHibernate;
+import com.example.javakursinis.model.Restaurant;
 import com.example.javakursinis.model.User;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.event.ActionEvent;
@@ -38,15 +39,21 @@ public class UserForm {
     }
 
     public void createUser(ActionEvent actionEvent) {
-//        User user = new User(usernameField.getText(),
-//        pswField.getText(), nameField.getText(), surnameField.getText(),
-//        phoneNumberField.getText());
-//        System.out.println(user);
-//        userListField.getItems().add(user);
-        User user = new User(usernameField.getText(),
-        pswField.getText(), nameField.getText(), surnameField.getText(),
-        phoneNumberField.getText());
-        genericHibernate.create(user);
+
+        if(userRadio.isSelected()) {
+            User user = new User(usernameField.getText(),
+                    pswField.getText(), nameField.getText(), surnameField.getText(),
+                    phoneNumberField.getText());
+            genericHibernate.create(user);
+            userListField.getItems().add(user);
+        } else if (restaurantRadio.isSelected()) {
+            Restaurant restaurant = new Restaurant();
+            genericHibernate.create(restaurant);
+        }else if (clientRadio.isSelected()) {
+
+        }else if (driverRadio.isSelected()) {
+
+        }
     }
 
     public void disableFields() {
