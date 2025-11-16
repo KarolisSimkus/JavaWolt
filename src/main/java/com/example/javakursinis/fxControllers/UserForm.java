@@ -6,10 +6,7 @@ import com.example.javakursinis.model.User;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 public class UserForm {
     @FXML
@@ -29,13 +26,31 @@ public class UserForm {
     public RadioButton clientRadio;
     public RadioButton driverRadio;
     public TextField addressField;
+     // laikinas
+    public Button updateButton;
 
+    private User userForUpdate;
     private EntityManagerFactory factory;
     private GenericHibernate genericHibernate;
+    private boolean isForUpdate;
 
-    public void setData(EntityManagerFactory factory) {
+    public void setData(EntityManagerFactory factory, User user, boolean isForUpdate) {
         this.factory = factory;
         this.genericHibernate = new GenericHibernate(factory);
+        this.userForUpdate = user;
+        this.isForUpdate = isForUpdate;
+        fillUserDataForUpdate();
+    }
+
+    private void fillUserDataForUpdate() {
+        if(userForUpdate != null && isForUpdate) {
+            if(userForUpdate instanceof User){
+                nameField.setText(userForUpdate.getLogin());
+                pswField.setText(userForUpdate.getPassword());
+            }
+        }else{
+            updateButton.setVisible(false);
+        }
     }
 
     public void createUser(ActionEvent actionEvent) {
@@ -66,5 +81,8 @@ public class UserForm {
         }else if (driverRadio.isSelected()) {
 
         }
+    }
+
+    public void updateUser(ActionEvent actionEvent) {
     }
 }

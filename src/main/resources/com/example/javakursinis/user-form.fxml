@@ -9,7 +9,6 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javakursinis.fxControllers.UserForm">
    <children>
       <Button layoutX="274.0" layoutY="334.0" mnemonicParsing="false" onAction="#createUser" text="Save" />
@@ -30,5 +29,6 @@
       <TextField fx:id="addressField" layoutX="189.0" layoutY="42.0" promptText="Address" />
       <DatePicker layoutX="187.0" layoutY="85.0" />
       <DatePicker layoutX="188.0" layoutY="129.0" />
+      <Button fx:id="updateButton" layoutX="335.0" layoutY="334.0" mnemonicParsing="false" onAction="#updateUser" text="Update" />
    </children>
 </AnchorPane>

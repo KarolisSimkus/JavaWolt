@@ -62,6 +62,23 @@ public class GenericHibernate {
             FxUtils.generateAlert(Alert.AlertType.INFORMATION,
                     "Error", "Error", "DB delete generic error");
             // em.getTransaction().rollback();
+            FxUtils.generateDialogAlert(Alert.AlertType.ERROR, "During delete", e);
+        }finally{
+            em.close();
+        }
+    }
+public <T> void deleteById(Class<T> entityClass, int id) {
+        try{
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+            T entity = em.find(entityClass, id);
+            em.remove(entity);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            // Cia alertus rasysime
+            FxUtils.generateAlert(Alert.AlertType.INFORMATION,
+                    "Error", "Error", "DB delete generic error");
+            // em.getTransaction().rollback();
         }finally{
             em.close();
         }
@@ -84,5 +101,23 @@ public class GenericHibernate {
             em.close();
         }
         return list;
+    }
+
+    public <T> T getEntityById(Class<T> entityClass, int id) {
+        T entity = null;
+
+        try{
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+            entity = em.find(entityClass, id);
+            em.getTransaction().commit();
+        }catch (Exception e) {
+            FxUtils.generateAlert(Alert.AlertType.INFORMATION,
+                    "Error", "Error", "DB getEntityById generic error");
+        }finally{
+            em.close();
+        }
+
+        return entity;
     }
 }

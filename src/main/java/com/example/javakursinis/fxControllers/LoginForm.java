@@ -35,8 +35,15 @@ public class LoginForm {
         if(user != null) {
             // Sekme
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main-form.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            Stage stage = (Stage) passwordField.getScene().getWindow();
+
+            Parent parent = fxmlLoader.load();
+            MainForm mainForm = fxmlLoader.getController();
+            mainForm.setData(factory, user);
+
+            Scene scene = new Scene(parent);
+
+
+            Stage stage = new Stage();
             stage.setScene(scene);
             stage.show();
         }else{
@@ -51,7 +58,7 @@ public class LoginForm {
 
         Parent parent = fxmlLoader.load();
         UserForm userForm = fxmlLoader.getController();
-        userForm.setData(factory);
+        userForm.setData(factory, null, false);
 
         Scene scene = new Scene(parent);
 

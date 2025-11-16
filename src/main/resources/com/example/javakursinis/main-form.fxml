@@ -9,12 +9,11 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javakursinis.fxControllers.MainForm">
    <children>
-      <TabPane layoutX="8.0" layoutY="6.0" prefHeight="394.0" prefWidth="594.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabPaneField" layoutX="8.0" layoutY="6.0" prefHeight="394.0" prefWidth="594.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="6.0">
         <tabs>
-          <Tab text="User management">
+          <Tab fx:id="userTab" onSelectionChanged="#reloadTableData" text="User management">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -34,7 +33,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Restaurant Orders">
+          <Tab fx:id="restaurantTab" text="Restaurant Orders">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -45,12 +44,24 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Menu">
+            <Tab fx:id="menuTab" text="Menu">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <ListView layoutX="14.0" layoutY="14.0" prefHeight="344.0" prefWidth="200.0" />
                         <ComboBox layoutX="222.0" layoutY="14.0" prefWidth="150.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab fx:id="altTab" text="Alt Tab">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ListView fx:id="userList" layoutX="14.0" layoutY="14.0" prefHeight="336.0" prefWidth="216.0" />
+                        <Button layoutX="259.0" layoutY="304.0" mnemonicParsing="false" onAction="#addUser" text="Add new User" />
+                        <Button layoutX="379.0" layoutY="304.0" mnemonicParsing="false" onAction="#loadUser" text="Update User" />
+                        <Button layoutX="481.0" layoutY="304.0" mnemonicParsing="false" onAction="#deleteUser" text="Delete" />
                      </children>
                   </AnchorPane>
               </content>
