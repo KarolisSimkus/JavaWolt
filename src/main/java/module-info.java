@@ -9,7 +9,6 @@ module com.example.javakursinis {
     requires java.desktop;
     requires java.sql;
     requires java.naming;
-    //Kodel cia man klaida, ar kazka pamirsau???
     requires mysql.connector.j;
     requires org.hibernate.orm.core;
     requires jakarta.persistence;

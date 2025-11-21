@@ -15,17 +15,19 @@
         <tabs>
           <Tab fx:id="userTab" onSelectionChanged="#reloadTableData" text="User management">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="627.0" prefWidth="966.0">
                      <children>
-                        <TableView layoutX="14.0" layoutY="14.0" prefHeight="225.0" prefWidth="575.0">
+                        <TableView fx:id="userTable" layoutX="14.0" layoutY="14.0" prefHeight="225.0" prefWidth="575.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="ID" />
-                            <TableColumn prefWidth="75.0" text="Login" />
-                              <TableColumn prefWidth="75.0" text="Password" />
-                              <TableColumn prefWidth="75.0" text="Name" />
-                              <TableColumn prefWidth="75.0" text="Surname" />
-                              <TableColumn prefWidth="75.0" text="Action" />
-                              <TableColumn prefWidth="90.0" text="Order history" />
+                            <TableColumn fx:id="idCol" prefWidth="75.0" text="ID" />
+                              <TableColumn fx:id="userTypeCol" prefWidth="75.0" text="UserType" />
+                            <TableColumn fx:id="loginCol" prefWidth="75.0" text="Login" />
+                              <TableColumn fx:id="pswCol" prefWidth="75.0" text="Password" />
+                              <TableColumn fx:id="nameCol" prefWidth="75.0" text="Name" />
+                              <TableColumn fx:id="surnameCol" prefWidth="75.0" text="Surname" />
+                              <TableColumn fx:id="actionCol" prefWidth="75.0" text="Action" />
+                              <TableColumn fx:id="historyCol" prefWidth="90.0" text="Order history" />
+                              <TableColumn fx:id="addressCol" prefWidth="75.0" text="Address" />
                           </columns>
                         </TableView>
                         <Button layoutX="247.0" layoutY="244.0" mnemonicParsing="false" text="Create new user" />
