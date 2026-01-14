@@ -3,6 +3,7 @@ package com.example.javakursinis.fxControllers;
 import com.example.javakursinis.HelloApplication;
 import com.example.javakursinis.hibernateControllers.CustomHibernate;
 import com.example.javakursinis.model.*;
+import com.mysql.cj.xdevapi.Client;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -59,9 +61,34 @@ public class MainForm implements Initializable {
     public TableColumn<UserTableParameters, String> addressCol;
     @FXML
     public TableColumn<UserTableParameters, String> userTypeCol;
+    @FXML
+    public TextField nameField;
+    @FXML
+    public TextField priceField;
+    @FXML
+    public ComboBox<Restaurant> restaurantField;
+    @FXML
+    public ComboBox<BasicUser> clientList;
+    @FXML
+    public ListView<FoodOrder> orderList;
+    @FXML
+    public ListView<BasicUser> basicUserList;
+    public ComboBox<OrderStatus> orderStatusField;
+    public ComboBox<OrderStatus> filterStatus;
+    public ComboBox<BasicUser> filterClient;
+    public DatePicker filterFrom;
+    public DatePicker filterTo;
+    public ListView<Cuisine> cuisineList;
+    public ListView<Cuisine> foodList;
+
+    //Cuisine tab elements
+    public ListView<Restaurant> restaurantList;
+    public TextField titleCuisineField;
+    public TextArea ingredientsField;
+    public TextField cuisinePriceField;
 
 
-     private ObservableList<UserTableParameters> data = FXCollections.observableArrayList();
+    private ObservableList<UserTableParameters> data = FXCollections.observableArrayList();
     //</editor-fold> elements
 
     private EntityManagerFactory emf;
@@ -137,9 +164,17 @@ public class MainForm implements Initializable {
             }
             userTable.getItems().addAll(data);
         }else if(restaurantTab.isSelected()) {
+            clearAllOrderFields();
             List<FoodOrder> foodOrders = getFoodOrders();
+            orderList.getItems().addAll(foodOrders);
+            clientList.getItems().addAll(customHibernate.getAllRecords(BasicUser.class));
+            basicUserList.getItems().addAll(customHibernate.getAllRecords(BasicUser.class));
+            restaurantField.getItems().addAll(customHibernate.getAllRecords(Restaurant.class));
+            orderStatusField.getItems().addAll(OrderStatus.values());
+            //foodList.getItems().addAll(customHibernate.getAllRecords(Cuisine.class));
         }else if(menuTab.isSelected()) {
-
+            clearAllCuisineFields();
+            restaurantList.getItems().addAll(customHibernate.getAllRecords(Restaurant.class));
         }else if(altTab.isSelected()) {
             List<User> userList1 = customHibernate.getAllRecords(User.class);
             userList.getItems().clear();
@@ -147,6 +182,13 @@ public class MainForm implements Initializable {
         }
     }
 
+    private void clearAllCuisineFields() {
+        foodList.getItems().clear();
+        cuisinePriceField.clear();
+        titleCuisineField.clear();
+        restaurantField.getItems().clear();
+        ingredientsField.clear();
+    }
     private List<FoodOrder> getFoodOrders(){
         if(currentUser instanceof Restaurant){
             return customHibernate.getRestaurantOrders((Restaurant) currentUser);
@@ -155,7 +197,7 @@ public class MainForm implements Initializable {
         }
     }
 
-    //<editor-fold desc="Alt tab func">
+
     public void openUserForm() throws IOException {
 
     }
@@ -200,6 +242,124 @@ public class MainForm implements Initializable {
         customHibernate.deleteById(User.class, selectedUser.getId());
     }
 
+    public void createOrder(ActionEvent actionEvent) {
+        if(isNumeric(priceField.getText())) {
+            /*FoodOrder FoodOrder = new FoodOrder(
+                    nameField.getText(),
+                    Double.parseDouble(priceField.getText()),
+                    clientList.getValue(),
+                    restaurantField.getValue()
+            );*/
+            FoodOrder FoodOrder = new FoodOrder(
+                    nameField.getText(),
+                    Double.parseDouble(priceField.getText()),
+                    clientList.getValue(),
+                    foodList.getSelectionModel().getSelectedItems(),
+                    restaurantField.getValue()
+            );
+            customHibernate.create(FoodOrder);
+            fillOrderList();
+        }
+    }
 
-    //</editor-fold>
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        }catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public void updateOrder(ActionEvent actionEvent) {
+        FoodOrder foodOrder = (FoodOrder) orderList.getSelectionModel().getSelectedItem();
+        foodOrder.setName(nameField.getText());
+        foodOrder.setPrice(Double.parseDouble(priceField.getText()));
+        foodOrder.setRestaurant(restaurantField.getSelectionModel().getSelectedItem());
+        foodOrder.setCustomer(clientList.getSelectionModel().getSelectedItem());
+        foodOrder.setStatus(orderStatusField.getValue());
+
+        customHibernate.update(foodOrder);
+
+        fillOrderList();
+    }
+
+    public void deleteOrder(ActionEvent actionEvent) {
+        FoodOrder foodOrder = (FoodOrder) orderList.getSelectionModel().getSelectedItem();
+
+        customHibernate.delete(FoodOrder.class, foodOrder.getId());
+
+        fillOrderList();
+    }
+
+    private void fillOrderList(){
+        orderList.getItems().clear();
+        orderList.getItems().addAll(customHibernate.getAllRecords(FoodOrder.class));
+    }
+
+    private void clearAllOrderFields() {
+        orderList.getItems().clear();
+        clientList.getItems().clear();
+        basicUserList.getItems().clear();
+        restaurantField.getItems().clear();
+        nameField.clear();
+        priceField.clear();
+    }
+
+    public void loadOrderInfo(MouseEvent mouseEvent) {
+        FoodOrder selectedOrder = (FoodOrder) orderList.getSelectionModel().getSelectedItem();
+        clientList.getItems().stream()
+                .filter(c -> c.getId() == selectedOrder.getCustomer().getId())
+                .findFirst()
+                .ifPresent(u -> clientList.getSelectionModel().select(u));
+        basicUserList.getItems().stream()
+                .filter(c -> c.getId() == selectedOrder.getCustomer().getId())
+                .findFirst()
+                .ifPresent(u -> basicUserList.getSelectionModel().select(u));
+        nameField.setText(selectedOrder.getName());
+        priceField.setText(String.valueOf(selectedOrder.getPrice()));
+        restaurantField.getItems().stream()
+                .filter(r -> r.getId() == selectedOrder.getCustomer().getId())
+                .findFirst()
+                .ifPresent(u -> restaurantField.getSelectionModel().select(u));
+        // orderStatusField.getItems().stream()
+        // 2ia disable enable reiketu
+        disableFoodOrderFields();
+
+    }
+
+    private void disableFoodOrderFields() {
+        if(orderStatusField.getSelectionModel().getSelectedItem() == OrderStatus.COMPLETED) {
+            clientList.setDisable(true);
+            basicUserList.setDisable(true);
+            restaurantField.setDisable(true);
+            priceField.setDisable(true);
+        }
+    }
+
+    public void filterOrders(ActionEvent actionEvent) {
+    }
+
+    public void createNewMenuItem(ActionEvent actionEvent) {
+    Cuisine cuisine = new Cuisine(
+            titleCuisineField.getText(),
+            ingredientsField.getText(),
+            Double.parseDouble(cuisinePriceField.getText()),
+            restaurantList.getSelectionModel().getSelectedItem());
+
+    customHibernate.create(cuisine);
+    }
+
+    public void updateMenuItem(ActionEvent actionEvent) {
+    }
+
+    public void loadRestaurantMenu(MouseEvent mouseEvent) {
+        cuisineList.getItems().clear();
+        cuisineList.getItems().addAll(customHibernate.getRestaurantCuisine(restaurantField.getSelectionModel().getSelectedItem()));
+    }
+
+    public void loadRestaurantMenuForOrder(ActionEvent actionEvent) {
+        foodList.getItems().clear();
+        foodList.getItems().addAll(customHibernate.getRestaurantCuisine(restaurantField.getSelectionModel().getSelectedItem()));
+    }
 }

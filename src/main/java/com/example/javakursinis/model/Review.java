@@ -14,6 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Review extends ChatMessage{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private int rate;
     private String text;
     @ManyToOne

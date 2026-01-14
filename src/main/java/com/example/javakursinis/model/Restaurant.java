@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 public class Restaurant extends User{
-    @OneToMany
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     protected List<Cuisine> menuItems;
     protected String workHours;
     protected double rating;
@@ -40,5 +40,9 @@ public class Restaurant extends User{
         this.isOpen = true;
         this.totalReviews = 0;
         this.rating = 0.0;
+    }
+
+    public Restaurant(String login, String password, String name, String surname, String phoneNumber) {
+        super(login, password, name, surname, phoneNumber);
     }
 }

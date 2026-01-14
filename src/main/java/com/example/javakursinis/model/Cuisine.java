@@ -17,13 +17,25 @@ public class Cuisine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Enumerated
-    private List<Ingredients> ingredients;
-    @Enumerated
+
+    private String ingredients;
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
     private List<Allergens> allergens;
     @Enumerated
     private PortionSize portionSize;
     private double price;
-    @ManyToMany
+    @ManyToMany(mappedBy = "items")
     private List<FoodOrder> orders;
+    private String name;
+
+    @ManyToOne
+    private Restaurant restaurant;
+
+    public Cuisine(String name, String ingredients, double price, Restaurant restaurant) {
+        this.name = name;
+        this.ingredients = ingredients;
+        this.price = price;
+        this.restaurant = restaurant;
+    }
 }

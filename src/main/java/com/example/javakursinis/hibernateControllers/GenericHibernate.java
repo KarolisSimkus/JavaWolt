@@ -1,7 +1,6 @@
 package com.example.javakursinis.hibernateControllers;
 
 import com.example.javakursinis.Utils.FxUtils;
-import com.example.javakursinis.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
@@ -51,7 +50,7 @@ public class GenericHibernate {
         }
     }
 
-    public <T> void delete(T entity) {
+    public <T> void delete(T entity, int id) {
         try{
             em = emf.createEntityManager();
             em.getTransaction().begin();

@@ -62,7 +62,9 @@ public class UserForm {
             genericHibernate.create(user);
             userListField.getItems().add(user);
         } else if (restaurantRadio.isSelected()) {
-            Restaurant restaurant = new Restaurant();
+            Restaurant restaurant = new Restaurant(usernameField.getText(),
+                    pswField.getText(), nameField.getText(), surnameField.getText(),
+                    phoneNumberField.getText());
             genericHibernate.create(restaurant);
         }else if (clientRadio.isSelected()) {
 
